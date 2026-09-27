@@ -11,7 +11,7 @@ internal sealed class EmojiListView : ListView
     private ListViewItem? _hover;
 
     /// <summary>Monochrome fallback font if Direct2D is unavailable.</summary>
-    public Font FallbackEmojiFont { get; set; } = new("Segoe UI Emoji", 14f);
+    private readonly Font _fallbackEmojiFont = new("Segoe UI Emoji", 14f);
 
     public EmojiListView()
     {
@@ -49,7 +49,7 @@ internal sealed class EmojiListView : ListView
 
         if (e.ColumnIndex == 0)
         {
-            ColorEmoji.Draw(e.Graphics, e.SubItem.Text, bounds, back, fore, FallbackEmojiFont);
+            ColorEmoji.Draw(e.Graphics, e.SubItem.Text, bounds, back, fore, _fallbackEmojiFont);
         }
         else
         {
@@ -93,7 +93,7 @@ internal sealed class EmojiListView : ListView
 
     protected override void Dispose(bool disposing)
     {
-        if (disposing) FallbackEmojiFont.Dispose();
+        if (disposing) _fallbackEmojiFont.Dispose();
         base.Dispose(disposing);
     }
 }
