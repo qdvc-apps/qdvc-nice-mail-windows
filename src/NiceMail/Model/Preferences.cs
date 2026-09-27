@@ -5,11 +5,15 @@ namespace Qdvc.NiceMail.Model;
 
 public enum ToolbarStyle { LabelsBesideIcons, LabelsBelowIcons }
 
+/// <summary>Colour theme. Applied at startup, so a change takes effect on the next launch.</summary>
+public enum AppTheme { System, Light, Dark }
+
 /// <summary>
 /// Per-user preferences, stored as JSON in %APPDATA%\QDVC\NiceMail\preferences.json.
 /// </summary>
 public sealed class Preferences
 {
+    public AppTheme Theme { get; set; } = AppTheme.System;
     public ToolbarStyle ToolbarStyle { get; set; } = ToolbarStyle.LabelsBesideIcons;
     public SkinTone SkinTone { get; set; } = SkinTone.None;
     /// <summary>Null means the built-in monospace default.</summary>

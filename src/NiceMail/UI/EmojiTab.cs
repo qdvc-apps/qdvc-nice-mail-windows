@@ -12,8 +12,7 @@ internal sealed class EmojiTab : TabView
     private readonly ToolStripComboBox _block;
     private readonly ToolStripButton _addCustom, _moveUp, _moveDown, _copy;
     private readonly ToolStripTextBox _search;
-    private readonly ListView _list;
-    private readonly Font _emojiFont;
+    private readonly EmojiListView _list;
     private readonly ContextMenuStrip _menu;
 
     private List<Favourite> _favourites = new();
@@ -21,8 +20,6 @@ internal sealed class EmojiTab : TabView
 
     public EmojiTab(Preferences prefs) : base(prefs)
     {
-        _emojiFont = new Font("Segoe UI Emoji", 14f);
-
         _toolbar = Ui.NewToolStrip(this);
         _block = new ToolStripComboBox { DropDownStyle = ComboBoxStyle.DropDownList, ToolTipText = "Emoji block" };
         _block.Items.AddRange(new object[] { "Favourites", "All Emoji" });
@@ -41,11 +38,9 @@ internal sealed class EmojiTab : TabView
         var (searchRow, search) = Ui.SearchRow(this, (_, _) => Rebuild());
         _search = search;
 
-        _list = new ListView
+        _list = new EmojiListView
         {
             Dock = DockStyle.Fill,
-            View = View.Details,
-            FullRowSelect = true,
             MultiSelect = false,
             HideSelection = false,
             GridLines = false,
@@ -139,10 +134,9 @@ internal sealed class EmojiTab : TabView
                 var r = _rows[i];
                 string name = r.Info.IsCustom ? "Custom emoji" : r.Info.Name;
                 if (!ShowingFavourites && r.Favourite is not null && !r.Info.IsCustom) name += "  ★";
-                var item = new ListViewItem(r.Info.WithTone(Prefs.SkinTone)) { UseItemStyleForSubItems = false, Tag = r };
+                var item = new ListViewItem(r.Info.WithTone(Prefs.SkinTone)) { Tag = r };
                 item.SubItems.Add(name);
                 item.SubItems.Add(r.Favourite?.Label ?? "");
-                item.SubItems[0].Font = _emojiFont;
                 items[i] = item;
             }
             _list.Items.AddRange(items);
@@ -287,11 +281,7 @@ internal sealed class EmojiTab : TabView
 
     protected override void Dispose(bool disposing)
     {
-        if (disposing)
-        {
-            _emojiFont.Dispose();
-            _menu.Dispose();
-        }
+        if (disposing) _menu.Dispose();
         base.Dispose(disposing);
     }
 }

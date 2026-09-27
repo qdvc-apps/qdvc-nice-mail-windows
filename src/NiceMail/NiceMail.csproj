@@ -17,7 +17,27 @@
     <ApplicationVisualStyles>true</ApplicationVisualStyles>
     <ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
     <ApplicationDefaultFont>Segoe UI, 9pt</ApplicationDefaultFont>
+
+    <!-- ColorEmoji.cs calls Direct2D/DirectWrite through COM vtable function pointers. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Dark mode APIs were experimental in .NET 9; harmless on .NET 10, needed if retargeted to 9. -->
+    <NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>
+
+  <!--
+    Optional custom icon: drop a multi-size .ico at branding/app.ico (not tracked by git).
+    If present, it becomes the exe's icon (Explorer, shortcuts, Start menu) and is also
+    embedded so the main window can use it (title bar, taskbar, Alt+Tab).
+  -->
+  <PropertyGroup>
+    <BrandingIcon>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\branding\app.ico'))</BrandingIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(BrandingIcon)')">
+    <ApplicationIcon>$(BrandingIcon)</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(BrandingIcon)')">
+    <EmbeddedResource Include="$(BrandingIcon)" LogicalName="Qdvc.NiceMail.app.ico" Link="Resources\app.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\emoji.tsv" LogicalName="Qdvc.NiceMail.emoji.tsv" />

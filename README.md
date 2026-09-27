@@ -33,6 +33,7 @@ src/NiceMail/
     UI/                     main window, one TabView per tab, dialogs, helpers
     Resources/emoji.tsv     generated emoji catalogue (embedded in the exe)
 tests/NiceMail.Tests/       xUnit tests for the model layer
+branding/                   optional app.ico (not tracked by git)
 tools/generate_emoji_catalogue.py
 sample-workspace/
 ```
@@ -61,12 +62,32 @@ Ids use the same snake_case-of-Unicode-name scheme as the GTK app
 
 ## Preferences
 
-Stored in `%APPDATA%\QDVC\NiceMail\preferences.json`: toolbar style, skin tone,
-signature font, reopen-last-workspace, plus remembered session state
+Stored in `%APPDATA%\QDVC\NiceMail\preferences.json`: theme, toolbar style,
+skin tone, signature font, reopen-last-workspace, plus remembered session state
 (disclaimer / Ref Only toggles, profile, Note to Self address, window size).
 
-## Known limitations
+## Dark mode
 
-Standard Win32 list controls draw emoji with GDI, which renders Segoe UI Emoji
-in monochrome rather than colour. The copied emoji are the real characters and
-appear in colour wherever they're pasted.
+Edit → Preferences → Theme offers *Follow Windows* (the default), *Light*, and
+*Dark*. It uses WinForms' built-in dark mode (`Application.SetColorMode`), which
+is applied at startup, so a change takes effect the next time the app starts.
+Dark mode requires Windows 11; on Windows 10 the app stays light. A few
+system-drawn elements, such as message boxes, remain light.
+
+## Colour emoji
+
+The standard Windows list control draws text with GDI, which shows emoji in
+monochrome. The emoji column (and the skin-tone dropdown in Preferences) is
+therefore owner-drawn with DirectWrite through a Direct2D DC render target,
+which renders the colour layers of Segoe UI Emoji. It's implemented in
+`UI/ColorEmoji.cs` with direct COM calls, so there's no extra dependency. If
+Direct2D can't start (for example on some remote or virtualised sessions), the
+list falls back to monochrome emoji.
+
+Emoji typed into plain text boxes (phrases, Note to Self) still appear in
+monochrome; that's how the standard Windows edit control draws them.
+
+## Custom icon
+
+Put a multi-size `.ico` at `branding/app.ico` (ignored by git) and rebuild; it
+becomes the exe's icon and the window icon. See `branding/README.md`.

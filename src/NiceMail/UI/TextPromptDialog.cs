@@ -14,6 +14,7 @@ internal sealed class TextPromptDialog : Form
         MinimizeBox = false;
         MaximizeBox = false;
         ShowInTaskbar = false;
+        ShowIcon = false;
         StartPosition = FormStartPosition.CenterParent;
         AutoScaleMode = AutoScaleMode.None; // sizes below are scaled explicitly
         Padding = new Padding(Ui.Scale(this, 12));

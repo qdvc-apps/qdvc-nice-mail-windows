@@ -68,7 +68,6 @@ internal static class Ui
         return new ToolStrip
         {
             GripStyle = ToolStripGripStyle.Hidden,
-            RenderMode = ToolStripRenderMode.System,
             Dock = DockStyle.Top,
             ImageScalingSize = new Size(px, px),
             CanOverflow = true,

@@ -90,6 +90,11 @@ internal sealed class NoteTab : TabView
             _calloutPanel.BackColor = SystemColors.Info;
             _callout.ForeColor = SystemColors.InfoText;
         }
+        else if (Application.IsDarkModeEnabled)
+        {
+            _calloutPanel.BackColor = Color.FromArgb(0x1E, 0x3A, 0x24);
+            _callout.ForeColor = Color.FromArgb(0xB8, 0xE6, 0xBF);
+        }
         else
         {
             _calloutPanel.BackColor = Color.FromArgb(0xDF, 0xF6, 0xDD);

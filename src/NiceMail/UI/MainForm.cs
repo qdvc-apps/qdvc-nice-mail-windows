@@ -26,6 +26,7 @@ internal sealed class MainForm : Form
             ? new Size(prefs.WindowWidth, prefs.WindowHeight)
             : new Size(Ui.Scale(this, 760), Ui.Scale(this, 600));
         if (prefs.WindowMaximised) WindowState = FormWindowState.Maximized;
+        LoadBrandingIcon();
 
         // ---- Menu ------------------------------------------------------
         var menu = new MenuStrip();
@@ -85,6 +86,15 @@ internal sealed class MainForm : Form
 
         OpenWorkspace(workspacePath, quiet: true);
         UpdateMenus();
+    }
+
+    /// <summary>Uses branding/app.ico if it was embedded at build time; otherwise keeps the default.</summary>
+    private void LoadBrandingIcon()
+    {
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Qdvc.NiceMail.app.ico");
+        if (stream is null) return;
+        try { Icon = new Icon(stream); }
+        catch (ArgumentException) { /* not a valid .ico; keep the default icon */ }
     }
 
     private TabView? Active => _tabs.SelectedIndex >= 0 ? _views[_tabs.SelectedIndex] : null;

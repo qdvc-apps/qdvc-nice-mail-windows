@@ -147,3 +147,29 @@ public class WorkspaceTests : IDisposable
         if (Directory.Exists(_dir)) Directory.Delete(_dir, recursive: true);
     }
 }
+
+public class PreferencesTests : IDisposable
+{
+    private readonly string _path = Path.Combine(Path.GetTempPath(), "nicemail-prefs-" + Guid.NewGuid().ToString("N") + ".json");
+
+    [Fact]
+    public void DefaultsToFollowingWindowsTheme()
+    {
+        Assert.Equal(AppTheme.System, Preferences.Load(_path).Theme);
+    }
+
+    [Fact]
+    public void RoundTripsThemeAndSkinTone()
+    {
+        var p = new Preferences { Theme = AppTheme.Dark, SkinTone = SkinTone.MediumDark };
+        p.Save(_path);
+        var loaded = Preferences.Load(_path);
+        Assert.Equal(AppTheme.Dark, loaded.Theme);
+        Assert.Equal(SkinTone.MediumDark, loaded.SkinTone);
+    }
+
+    public void Dispose()
+    {
+        if (File.Exists(_path)) File.Delete(_path);
+    }
+}

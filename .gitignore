@@ -6,3 +6,6 @@ obj/
 !.vscode/extensions.json
 publish/
 TestResults/
+
+# Personal/organisation icon (see branding/README.md)
+branding/*.ico
