@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Qdvc.NiceMail</RootNamespace>
+    <AssemblyName>NiceMail</AssemblyName>
+    <AssemblyTitle>QDVC Nice Mail</AssemblyTitle>
+    <Product>QDVC Nice Mail</Product>
+    <Version>0.1.0</Version>
+
+    <!-- Consumed by ApplicationConfiguration.Initialize() in Program.cs -->
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
+    <ApplicationDefaultFont>Segoe UI, 9pt</ApplicationDefaultFont>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\emoji.tsv" LogicalName="Qdvc.NiceMail.emoji.tsv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="NiceMail.Tests" />
+  </ItemGroup>
+
+</Project>

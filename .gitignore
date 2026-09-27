@@ -1,0 +1,8 @@
+bin/
+obj/
+*.user
+.vs/
+.vscode/*
+!.vscode/extensions.json
+publish/
+TestResults/

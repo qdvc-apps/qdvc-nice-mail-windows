@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/NiceMail/NiceMail.csproj" />
+  <Project Path="tests/NiceMail.Tests/NiceMail.Tests.csproj" />
+</Solution>
