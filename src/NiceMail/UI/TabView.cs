@@ -43,6 +43,9 @@ internal abstract class TabView : UserControl
 
     public virtual void ApplyPreferences() { }
 
+    /// <summary>Puts keyboard focus on the page's main control when the page is shown.</summary>
+    public virtual void FocusDefault() => SelectNextControl(null, true, true, true, true);
+
     protected void ShowError(string action, Exception ex) =>
         MessageBox.Show(this, $"{action} failed:\n\n{ex.Message}", "QDVC Nice Mail",
             MessageBoxButtons.OK, MessageBoxIcon.Error);

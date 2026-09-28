@@ -50,8 +50,9 @@ internal sealed class PhrasesTab : TabView
         ApplyPreferences();
     }
 
-    public override string Title => "Phrases";
+    public override string Title => "&Phrases";
     public override bool HasSearch => true;
+    public override void FocusDefault() => _list.Focus();
     public override void FocusSearch() { _search.Focus(); _search.SelectAll(); }
 
     public override void ApplyPreferences() => Ui.ApplyToolbarStyle(_toolbar, Prefs.ToolbarStyle);

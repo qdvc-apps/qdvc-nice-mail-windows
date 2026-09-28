@@ -62,6 +62,12 @@ internal static class Ui
 {
     public static int Scale(Control c, int logical) => (int)Math.Round(logical * c.DeviceDpi / 96.0);
 
+    /// <summary>Mixes <paramref name="amount"/> (0–1) of <paramref name="b"/> into <paramref name="a"/>.</summary>
+    public static Color Blend(Color a, Color b, double amount) => Color.FromArgb(
+        (int)Math.Round(a.R + (b.R - a.R) * amount),
+        (int)Math.Round(a.G + (b.G - a.G) * amount),
+        (int)Math.Round(a.B + (b.B - a.B) * amount));
+
     public static ToolStrip NewToolStrip(Control owner)
     {
         int px = Scale(owner, 16);

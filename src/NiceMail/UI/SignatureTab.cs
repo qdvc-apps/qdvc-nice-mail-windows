@@ -33,7 +33,7 @@ internal sealed class SignatureTab : TabView
         _copy = Ui.Button(this, "Copy", Glyph.Copy, (_, _) => CopyToClipboard(), "Copy the signature (Ctrl+C)");
         _toolbar.Items.AddRange(new ToolStripItem[]
         {
-            new ToolStripLabel("&Profile:"), _profile, new ToolStripSeparator(),
+            new ToolStripLabel("P&rofile:"), _profile, new ToolStripSeparator(),
             _disclaimer, _refOnly, new ToolStripSeparator(), _newRef, new ToolStripSeparator(), _copy,
         });
 
@@ -61,8 +61,9 @@ internal sealed class SignatureTab : TabView
         ApplyPreferences();
     }
 
-    public override string Title => "Signature";
+    public override string Title => "Si&gnature";
     public override bool HasMessageRef => true;
+    public override void FocusDefault() => _preview.Focus();
 
     public override void ApplyPreferences()
     {

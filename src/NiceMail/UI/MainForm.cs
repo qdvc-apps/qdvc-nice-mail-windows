@@ -8,7 +8,8 @@ internal sealed class MainForm : Form
     private const string AppName = "QDVC Nice Mail";
 
     private readonly Preferences _prefs;
-    private readonly TabControl _tabs;
+    private readonly PageTabStrip _tabs;
+    private readonly Panel _pages;
     private readonly List<TabView> _views;
     private readonly ToolStripStatusLabel _statusMessage, _statusWorkspace;
     private readonly ToolStripMenuItem _findItem, _newRefItem;
@@ -62,15 +63,16 @@ internal sealed class MainForm : Form
         {
             new EmojiTab(prefs), new PhrasesTab(prefs), new SignatureTab(prefs), new NoteTab(prefs),
         };
-        _tabs = new TabControl { Dock = DockStyle.Fill, Padding = new Point(Ui.Scale(this, 12), Ui.Scale(this, 4)) };
+        _tabs = new PageTabStrip();
+        _pages = new Panel { Dock = DockStyle.Fill };
         foreach (var v in _views)
         {
-            var page = new TabPage(v.Title) { UseVisualStyleBackColor = true };
-            page.Controls.Add(v);
-            _tabs.TabPages.Add(page);
+            _tabs.AddTab(v.Title);
+            v.Visible = false;
+            _pages.Controls.Add(v);
             v.StatusMessage += (_, msg) => ShowStatus(msg);
         }
-        _tabs.SelectedIndexChanged += (_, _) => UpdateMenus();
+        _tabs.SelectedIndexChanged += (_, _) => ShowPage();
 
         // ---- Status bar --------------------------------------------------
         var status = new StatusStrip { SizingGrip = true };
@@ -80,12 +82,14 @@ internal sealed class MainForm : Form
         _statusTimer = new System.Windows.Forms.Timer { Interval = 4000 };
         _statusTimer.Tick += (_, _) => { _statusMessage.Text = ""; _statusTimer.Stop(); };
 
+        // Dock order: the last control added is docked first (outermost).
+        Controls.Add(_pages);
         Controls.Add(_tabs);
         Controls.Add(status);
         Controls.Add(menu);
 
         OpenWorkspace(workspacePath, quiet: true);
-        UpdateMenus();
+        _tabs.SelectedIndex = 0;
     }
 
     /// <summary>Uses branding/app.ico if it was embedded at build time; otherwise keeps the default.</summary>
@@ -98,6 +102,39 @@ internal sealed class MainForm : Form
     }
 
     private TabView? Active => _tabs.SelectedIndex >= 0 ? _views[_tabs.SelectedIndex] : null;
+
+    private void ShowPage()
+    {
+        var active = Active;
+        _pages.SuspendLayout();
+        foreach (var v in _views) v.Visible = ReferenceEquals(v, active);
+        _pages.ResumeLayout();
+        UpdateMenus();
+        if (IsHandleCreated) active?.FocusDefault();
+    }
+
+    /// <summary>Tab-switching shortcuts that TabControl used to provide.</summary>
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        switch (keyData)
+        {
+            case Keys.Control | Keys.Tab:
+            case Keys.Control | Keys.PageDown:
+                _tabs.Cycle(+1);
+                return true;
+            case Keys.Control | Keys.Shift | Keys.Tab:
+            case Keys.Control | Keys.PageUp:
+                _tabs.Cycle(-1);
+                return true;
+        }
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
+
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+        Active?.FocusDefault();
+    }
 
     private void UpdateMenus()
     {

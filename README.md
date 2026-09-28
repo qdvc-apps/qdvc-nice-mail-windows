@@ -44,7 +44,9 @@ Alt+F / Alt+E / Alt+V / Alt+H open the menus. Ctrl+O opens a workspace,
 Ctrl+C copies (the selected text in a text box if there is a selection,
 otherwise the active tab's emoji, phrase, or signature), Ctrl+F jumps to
 search, Ctrl+R refreshes from disk, F5 makes a new message ref, and Ctrl+,
-opens Preferences. Ctrl+Tab switches tabs. In the Phrases tab, Enter edits
+opens Preferences. Ctrl+Tab / Ctrl+Shift+Tab (or Ctrl+PgDn / Ctrl+PgUp) switch
+tabs, and Alt+M, Alt+P, Alt+G and Alt+N jump to Emoji, Phrases, Signature and
+Note to Self. In the Phrases tab, Enter edits
 and Delete deletes. Esc clears a search box.
 
 ## Emoji catalogue

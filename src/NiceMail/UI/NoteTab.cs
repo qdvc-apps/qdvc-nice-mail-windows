@@ -65,7 +65,7 @@ internal sealed class NoteTab : TabView
         _calloutPanel.Controls.Add(_callout);
         ApplyCalloutColours();
 
-        grid.Controls.Add(Caption("&From / To:"), 0, 0);
+        grid.Controls.Add(Caption("F&rom / To:"), 0, 0);
         grid.Controls.Add(_address, 1, 0);
         grid.Controls.Add(Caption("S&ubject:"), 0, 1);
         grid.Controls.Add(_subject, 1, 1);
@@ -80,8 +80,13 @@ internal sealed class NoteTab : TabView
         ApplyPreferences();
     }
 
-    public override string Title => "Note to Self";
+    public override string Title => "&Note to Self";
     public override bool HasMessageRef => true;
+
+    public override void FocusDefault()
+    {
+        if (_address.Text.Trim().Length == 0) _address.Focus(); else _subject.Focus();
+    }
 
     private void ApplyCalloutColours()
     {

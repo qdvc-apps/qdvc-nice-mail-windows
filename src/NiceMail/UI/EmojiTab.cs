@@ -64,8 +64,9 @@ internal sealed class EmojiTab : TabView
         ApplyPreferences();
     }
 
-    public override string Title => "Emoji";
+    public override string Title => "E&moji";
     public override bool HasSearch => true;
+    public override void FocusDefault() => _list.Focus();
     public override void FocusSearch() { _search.Focus(); _search.SelectAll(); }
 
     private bool ShowingFavourites => _block.SelectedIndex == 0;
